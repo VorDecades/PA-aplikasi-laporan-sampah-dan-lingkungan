@@ -1,6 +1,7 @@
 from datetime import datetime
 
 users = {
+    "manager": {"password": "manager123", "role": "manager"},
     "admin": {"password": "admin123", "role": "admin"},
     "user": {"password": "user123", "role": "user"},
     "ajis": {"password": "ajis123", "role": "woi"}

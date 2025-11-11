@@ -6,7 +6,32 @@ from data import laporan, log_status, timestamp
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def tampilkan_laporan():
+def MENU_ADMIN(username):
+    while True:
+        try:
+            menu = inquirer.select(
+                message="=== >>> [Menu Admin] <<< ===",
+                choices=["Tampilkan semua laporan", "Tampilkan Laporan Filter", "Buat laporan", "Update status", "Hapus laporan", "Logout"],
+                pointer="👉"
+            ).execute()
+            clear()
+            if menu == "Tampilkan semua laporan":
+                                READ()
+            elif menu == "Tampilkan Laporan Filter":
+                                FILTER_READ()
+            elif menu == "Buat laporan":
+                                CREATE(username)
+            elif menu == "Update status":
+                                UPDATE()
+            elif menu == "Hapus laporan":
+                                DELETE()
+            elif menu == "Logout":
+                                break
+        except Exception as e:
+            print(f"\nError: {e}")
+            input("\nTekan Enter")
+
+def READ():
     clear()
     try:
         print("=== DAFTAR LAPORAN ===")
@@ -16,11 +41,11 @@ def tampilkan_laporan():
             return
 
         table = PrettyTable()
-        table.field_names = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal"]
+        table.field_names = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal", "User"]
         for id, data in laporan.items():
             table.add_row([
                 id, data["lokasi"], data["jenis"], data["status"],
-                data["deskripsi"], log_status.get(id, "Belum ada")
+                data["deskripsi"], log_status.get(id, "Belum ada"), data["User"]
             ])
         print(table)
         input("\nTekan Enter")
@@ -28,7 +53,39 @@ def tampilkan_laporan():
         print(f"\nError: {e}")
         input("\nTekan Enter")
 
-def buat_laporan(username):
+def FILTER_READ():
+    clear()
+    try:
+        print("=== FILTER LAPORAN BERDASARKAN STATUS ===")
+        status_filter = inquirer.select(
+            message="Pilih status laporan yang ingin ditampilkan:",
+            choices=["belum ditindak", "di proses", "sudah ditindak"],
+            pointer="👉"
+        ).execute()
+
+        filtered = {
+            id: data for id, data in laporan.items()
+            if data["status"] == status_filter
+        }
+
+        if not filtered:
+            print(f"Tidak ada laporan dengan status '{status_filter}'.")
+        else:
+            table = PrettyTable()
+            table.field_names = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal", "User"]
+            for id, data in filtered.items():
+                table.add_row([
+                    id, data["lokasi"], data["jenis"], data["status"],
+                    data["deskripsi"], log_status.get(id, "Belum ada"), data["User"]
+                ])
+            print(table)
+
+        input("\nTekan Enter")
+    except Exception as e:
+        print(f"\nError: {e}")
+        input("\nTekan Enter")
+
+def CREATE(username):
     clear()
     try:
         print("=== CREATE LAPORAN ===")
@@ -52,7 +109,7 @@ def buat_laporan(username):
             "jenis": jenis,
             "deskripsi": deskripsi,
             "status": "belum ditindak",
-            "dibuat_oleh": username
+            "User": username
         }
         log_status[id] = timestamp()
         print("Laporan berhasil dibuat.")
@@ -61,7 +118,7 @@ def buat_laporan(username):
         print(f"\nError: {e}")
         input("\nTekan Enter")
 
-def update_laporan():
+def UPDATE():
     clear()
     try:
         print("=== UPDATE STATUS LAPORAN ===")
@@ -83,7 +140,7 @@ def update_laporan():
         print(f"\nError: {e}")
         input("\nTekan Enter")
 
-def hapus_laporan():
+def DELETE():
     clear()
     try:
         print("=== HAPUS LAPORAN ===")
