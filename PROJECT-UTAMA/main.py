@@ -4,6 +4,7 @@ from loginregis import login, register
 from admin import MENU_ADMIN
 from manager import MENU_MANAGER
 from user import MENU_USER
+from data import load_dummy
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -16,8 +17,10 @@ def menu_input(pesan, opsi):
         pointer="👉",
         default=opsi[0]
     ).execute()
+    
 
 def main():
+    load_dummy()
     while True:
         try:
             pilihan = menu_input("===== >>> [MENU UTAMA] <<< =====", ["Login", "Register", "Keluar"])

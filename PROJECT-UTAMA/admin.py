@@ -1,6 +1,6 @@
 import os
 from InquirerPy import inquirer
-from prettytable import PrettyTable
+from tabulate import tabulate
 from data import laporan, log_status, timestamp
 
 def clear():
@@ -40,18 +40,20 @@ def READ():
             input("\nTekan Enter")
             return
 
-        table = PrettyTable()
-        table.field_names = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal", "User"]
-        for id, data in laporan.items():
-            table.add_row([
-                id, data["lokasi"], data["jenis"], data["status"],
-                data["deskripsi"], log_status.get(id, "Belum ada"), data["User"]
-            ])
-        print(table)
+        headers = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal", "User"]
+        rows = [
+            [id, data["lokasi"], data["jenis"], data["status"],
+            data["deskripsi"], log_status.get(id, "Belum ada"), data["User"]]
+            for id, data in laporan.items()
+        ]
+        print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
         input("\nTekan Enter")
+
     except Exception as e:
         print(f"\nError: {e}")
         input("\nTekan Enter")
+
+from tabulate import tabulate
 
 def FILTER_READ():
     clear()
@@ -63,6 +65,7 @@ def FILTER_READ():
             pointer="👉"
         ).execute()
 
+        # ambil hanya laporan sesuai status
         filtered = {
             id: data for id, data in laporan.items()
             if data["status"] == status_filter
@@ -71,19 +74,19 @@ def FILTER_READ():
         if not filtered:
             print(f"Tidak ada laporan dengan status '{status_filter}'.")
         else:
-            table = PrettyTable()
-            table.field_names = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal", "User"]
-            for id, data in filtered.items():
-                table.add_row([
-                    id, data["lokasi"], data["jenis"], data["status"],
-                    data["deskripsi"], log_status.get(id, "Belum ada"), data["User"]
-                ])
-            print(table)
+            headers = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal", "User"] # header
+            rows = [
+                [id, data["lokasi"], data["jenis"], data["status"],
+                 data["deskripsi"], log_status.get(id, "Belum ada"), data["User"]] # isi data
+                for id, data in filtered.items()   # munculkan semua data sesuai filter
+            ]
+            print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
 
         input("\nTekan Enter")
     except Exception as e:
         print(f"\nError: {e}")
         input("\nTekan Enter")
+
 
 def CREATE(username):
     clear()

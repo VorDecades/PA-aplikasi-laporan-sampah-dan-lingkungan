@@ -1,0 +1,6 @@
+id;lokasi;jenis;deskripsi;status;user;tanggal
+1;Pasar Induk;sampah;Tumpukan sampah tidak diangkut;belum ditindak;admin;21-11-2025 08:30
+2;Sungai Mahakam;pencemaran;Air sungai berubah warna;di proses;user;21-11-2025 09:15
+3;Taman Kota;perusakan;Pohon ditebang sembarangan;sudah ditindak;manager;22-11-2025 10:00
+4;Jalan Protokol;sampah;Sampah berserakan di trotoar;belum ditindak;ajis;22-11-2025 11:45
+5;Kawasan Industri;pencemaran;Asap pabrik pekat;di proses;admin;23-11-2025 07:20
