@@ -7,10 +7,11 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def MENU_ADMIN(username):
+    clear()
     while True:
         try:
             menu = inquirer.select(
-                message="=== >>> [Menu Admin] <<< ===",
+                message="\n============================\n=== >>> [Menu Admin] <<< ===\n============================",
                 choices=["Tampilkan semua laporan", "Tampilkan Laporan Filter", "Buat laporan", "Update status", "Hapus laporan", "Logout"],
                 pointer="👉"
             ).execute()
@@ -48,10 +49,11 @@ def READ():
         ]
         print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
         input("\nTekan Enter")
-
+        clear()
     except Exception as e:
         print(f"\nError: {e}")
         input("\nTekan Enter")
+        clear()
 
 def FILTER_READ():
     clear()
@@ -78,12 +80,14 @@ def FILTER_READ():
                  data["deskripsi"], log_status.get(id, "Belum ada"), data["User"]] # isi data
                 for id, data in filtered.items()   # munculkan semua data sesuai filter
             ]
-            print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
-
+            print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))  
         input("\nTekan Enter")
+        clear()
+
     except Exception as e:
         print(f"\nError: {e}")
         input("\nTekan Enter")
+        clear()
 
 
 def CREATE(username):
@@ -115,9 +119,12 @@ def CREATE(username):
         log_status[id] = timestamp()
         print("Laporan berhasil dibuat.")
         input("\nTekan Enter")
+        clear()
+
     except Exception as e:
         print(f"\nError: {e}")
         input("\nTekan Enter")
+        clear()
 
 def UPDATE():
     clear()
@@ -137,9 +144,12 @@ def UPDATE():
         log_status[id] = timestamp()
         print("Status berhasil diperbarui.")
         input("\nTekan Enter")
+        clear()
+
     except Exception as e:
         print(f"\nError: {e}")
         input("\nTekan Enter")
+        clear()
 
 def DELETE():
     clear()
@@ -157,6 +167,9 @@ def DELETE():
         else:
             print("Dibatalkan.")
         input("\nTekan Enter")
+        clear()
+
     except Exception as e:
         print(f"\nError: {e}")
         input("\nTekan Enter")
+        clear()

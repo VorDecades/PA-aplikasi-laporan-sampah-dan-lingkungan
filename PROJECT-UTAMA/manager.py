@@ -1,6 +1,7 @@
 import os
+from data import log_activity
 from InquirerPy import inquirer
-from prettytable import PrettyTable
+from tabulate import tabulate
 from data import users
 
 def clear():
@@ -9,62 +10,75 @@ def clear():
 def MENU_MANAGER():
     while True:
         try:
+            clear()
             menu = inquirer.select(
-                message="=== >>> [Menu Manager] <<< ===",
-                choices=["Tampilkan semua akun", "Tampilkan akun filter", "Buat akun", "Update akun", "Hapus akun", "Logout"],
+                message="\n==============================\n=== >>> [Menu Manager] <<< ===\n==============================",
+                choices=[
+                    "Log Activity",
+                    "Tampilkan semua akun",
+                    "Tampilkan akun filter",
+                    "Buat akun",
+                    "Update akun",
+                    "Hapus akun",
+                    "Logout"
+                ],
                 pointer="👉"
             ).execute()
             
-            clear()
-            if menu == "Tampilkan semua akun":
-                                READ_ACC()
+            if menu == "Log Activity":
+                READ_LOG_ACTIVITY()
+            elif menu == "Tampilkan semua akun":
+                READ_ACC()
             elif menu == "Tampilkan akun filter":
-                                READ_FILTER_ACC()
+                READ_FILTER_ACC()
             elif menu == "Buat akun":
-                                CREATE_ACC()
+                CREATE_ACC()
             elif menu == "Update akun":
-                                UPDATE_ACC()
+                UPDATE_ACC()
             elif menu == "Hapus akun":
-                                DELETE_ACC()
+                DELETE_ACC()
             elif menu == "Logout":
-                                break
+                break
         except Exception as e:
             print(f"\nError: {e}")
             input("\nTekan Enter")
 
+def READ_LOG_ACTIVITY():
+    clear()
+    print("=== LOG ACTIVITY ===")
+    if not log_activity:
+        print("Belum ada aktivitas login.")
+    else:
+        headers = ["User", "Role", "Waktu Login"]
+        rows = [[log["user"], log["role"], log["time"]] for log in log_activity]
+        print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
+    input("\nTekan Enter")
+
+
 def READ_ACC():
     clear()
-    print("=== DAFTAR AKUN ===")
-    table = PrettyTable()
-    table.field_names = ["Username", "Password", "Role"]
-    for username, info in users.items():
-        table.add_row([username, info["password"], info["role"]])
-    print(table)
+    headers = ["Username", "Password", "Role"]
+    rows = [[username, info["password"], info["role"]] for username, info in users.items()]
+    print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
     input("\nTekan Enter")
 
 def READ_FILTER_ACC():
     clear()
     try:
-        print("=== FILTER AKUN BERDASARKAN ROLE ===")
         role_filter = inquirer.select(
             message="Pilih role yang ingin ditampilkan:",
             choices=["admin", "user", "manager"],
             pointer="👉"
         ).execute()
 
-        filtered = {
-            username: info for username, info in users.items()
-            if info["role"] == role_filter
-        }
+        filtered = {u: info for u, info in users.items() if info["role"] == role_filter}
 
         if not filtered:
             print(f"Tidak ada akun dengan role '{role_filter}'.")
         else:
-            table = PrettyTable()
-            table.field_names = ["Username", "Password", "Role"]
-            for username, info in filtered.items():
-                table.add_row([username, info["password"], info["role"]])
-            print(table)
+            headers = ["Username", "Password", "Role"]
+            rows = [[u, info["password"], info["role"]] for u, info in filtered.items()]
+            print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
 
         input("\nTekan Enter")
     except Exception as e:
@@ -74,7 +88,6 @@ def READ_FILTER_ACC():
 def CREATE_ACC():
     clear()
     try:
-        print("=== BUAT AKUN BARU ===")
         username = input("Username baru: ").strip()
         password = input("Password (min 6 karakter): ").strip()
 
@@ -101,54 +114,68 @@ def CREATE_ACC():
 def UPDATE_ACC():
     clear()
     try:
-        print("=== UBAH AKUN ===")
-        username = input("Username yang ingin diubah: ").strip()
+        username = input("Masukkan username yang ingin diubah: ").strip()
         if username not in users:
             raise ValueError("Username tidak ditemukan.")
 
         pilihan = inquirer.select(
-            message="Apa yang ingin Anda ubah?",
+            message="Apa yang ingin diubah?",
             choices=["Password", "Role"],
             pointer="👉"
         ).execute()
 
         if pilihan == "Password":
-            new_password = input("Password baru (min 6 karakter): ").strip()
+            current_password = users[username]["password"]
+            new_password = input("Masukkan password baru (min 6 karakter): ").strip()
+
             if len(new_password) < 6:
                 raise ValueError("Password terlalu pendek.")
+            if new_password == current_password:
+                raise ValueError("Password baru tidak boleh sama dengan password lama.")
+
             users[username]["password"] = new_password
-            print("Password berhasil diubah.")
+            print("\nPassword berhasil diubah.")
 
         elif pilihan == "Role":
+            current_role = users[username]["role"]
             new_role = inquirer.select(
-                message="Pilih role baru:",
+                message=f"Role saat ini: {current_role}. Pilih role baru:",
                 choices=["admin", "user", "manager"],
                 pointer="👉"
             ).execute()
+
+            if new_role == current_role:
+                raise ValueError("Role baru tidak boleh sama dengan role lama.")
+
             users[username]["role"] = new_role
-            print("Role berhasil diubah.")
+            print("\nRole berhasil diubah.")
 
         input("\nTekan Enter")
     except Exception as e:
         print(f"\nError: {e}")
         input("\nTekan Enter")
 
+
 def DELETE_ACC():
     clear()
     try:
-        print("=== HAPUS AKUN ===")
-        username = input("Username yang ingin dihapus: ").strip()
+        username = input("Masukkan username yang ingin dihapus: ").strip()
         if username not in users:
             raise ValueError("Username tidak ditemukan.")
         if username == "admin":
             raise ValueError("Akun admin tidak boleh dihapus.")
 
-        konfirmasi = inquirer.confirm("Yakin ingin menghapus akun ini?", default=False).execute()
+        konfirmasi = inquirer.confirm(
+            message=f"Yakin ingin menghapus akun '{username}'?",
+            default=False
+        ).execute()
+
         if konfirmasi:
             del users[username]
-            print("Akun berhasil dihapus.")
+            print("\nAkun berhasil dihapus.")
         else:
-            print("Penghapusan dibatalkan.")
+            print("\nPenghapusan dibatalkan.")
+
         input("\nTekan Enter")
     except Exception as e:
         print(f"\nError: {e}")

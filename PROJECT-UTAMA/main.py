@@ -41,10 +41,10 @@ def main():
                     MENU_ADMIN(username)
                 elif role == "user":
                     MENU_USER(username)
-
                 else:
                     print("Anda Heker, ga boleh masuk.")
-                    input("Tekan Enter")
+                    input("\nTekan Enter")
+                    clear()
 
             elif pilihan == "Keluar":
                 clear()
@@ -54,6 +54,7 @@ def main():
         except Exception as e:
             print(f"\nError: {e}")
             input("\nTekan Enter")
+            clear()
 
 if __name__ == "__main__":
     main()

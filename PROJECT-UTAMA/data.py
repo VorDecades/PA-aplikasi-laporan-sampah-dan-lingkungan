@@ -8,6 +8,7 @@ users = {
 }
 
 laporan = {}
+log_activity = []
 log_status = {}
 
 def timestamp():

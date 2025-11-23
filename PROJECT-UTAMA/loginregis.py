@@ -1,6 +1,6 @@
 import os
 import inquirer
-from data import users
+from data import users, log_activity, timestamp
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -34,9 +34,18 @@ def login():
         password = input("Password: ").strip()
 
         if username in users and users[username]["password"] == password:
-            print(f"\nLogin berhasil sebagai {users[username]['role']}")
+            role = users[username]["role"]
+            print(f"\nLogin berhasil sebagai {role}")
+
+            # simpan log activity
+            log_activity.append({
+                "user": username,
+                "role": role,
+                "time": timestamp()
+            })
+
             input("\nTekan Enter")
-            return username, users[username]["role"]
+            return username, role
         else:
             raise ValueError("Username atau password salah.")
     except Exception as e:

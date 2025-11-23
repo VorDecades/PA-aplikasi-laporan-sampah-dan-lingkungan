@@ -7,10 +7,11 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def MENU_USER(username):
+    clear()
     while True:
         try:
             menu = inquirer.select(
-                message="=== >>> [Menu Pengguna] <<< ===",
+                message="\n===============================\n=== >>> [Menu Pengguna] <<< ===\n===============================",
                 choices=["Buat laporan", "Tampilkan semua laporan", "Tampilkan laporan Filter", "Ubah profil", "Logout"],
                 pointer="👉"
             ).execute()
@@ -29,6 +30,7 @@ def MENU_USER(username):
         except Exception as e:
             print(f"\nError: {e}")
             input("\nTekan Enter")
+            clear()
 
 def UPDATE_PROFILE():
     clear()
@@ -64,6 +66,9 @@ def UPDATE_PROFILE():
             print("Password berhasil diubah.")
 
         input("\nTekan Enter")
+        clear()
+
     except Exception as e:
         print(f"\nError: {e}")
         input("\nTekan Enter")
+        clear()
