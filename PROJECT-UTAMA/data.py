@@ -31,5 +31,5 @@ def load_dummy():
                 }
                 log_status[id] = tanggal
     except FileNotFoundError:
-        print("File laporan_dummy.csv tidak ditemukan.")
+        print("File load_dummy.csv tidak ditemukan.")
 

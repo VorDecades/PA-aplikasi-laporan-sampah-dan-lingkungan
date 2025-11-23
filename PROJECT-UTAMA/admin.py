@@ -53,8 +53,6 @@ def READ():
         print(f"\nError: {e}")
         input("\nTekan Enter")
 
-from tabulate import tabulate
-
 def FILTER_READ():
     clear()
     try:
