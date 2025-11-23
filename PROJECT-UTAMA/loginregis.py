@@ -1,41 +1,44 @@
 import os
-import inquirer
+from termcolor import colored
 from data import users, log_activity, timestamp
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+def pause():
+    input(colored("\nTekan Enter", "grey"))
+
 def register():
     clear()
     try:
-        print("=== REGISTRASI ===")
+        print(colored("=== REGISTRASI ===", "cyan"))
         username = input("Username: ").strip()
         password = input("Password (min 6 karakter): ").strip()
 
         if not username or not password:
-            raise ValueError("Username dan password tidak boleh kosong.")
+            raise ValueError("Username dan Password Tidak Boleh Kosong.")
         if len(password) < 6:
-            raise ValueError("Password terlalu pendek.")
+            raise ValueError(colored("Password Terlalu Pendek.", "red"))
         elif username in users:
-            raise ValueError("Username sudah terdaftar.")
+            raise ValueError(colored("Username Sudah Terdaftar.", "red"))
 
         users[username] = {"password": password, "role": "user"}
-        print("\nRegistrasi berhasil.")
-        input("\nTekan Enter")
+        print(colored("\nRegistrasi berhasil.", "green"))
+        pause()
     except Exception as e:
         print(f"\nError: {e}")
-        input("\nTekan Enter")
+        pause()
 
 def login():
     clear()
     try:
-        print("=== LOGIN ===")
+        print(colored("=== LOGIN ===", "cyan"))
         username = input("Username: ").strip()
         password = input("Password: ").strip()
 
         if username in users and users[username]["password"] == password:
             role = users[username]["role"]
-            print(f"\nLogin berhasil sebagai {role}")
+            print(colored(f"\nLogin Berhasil Sebagai {role}", "green"))
 
             # simpan log activity
             log_activity.append({
@@ -44,11 +47,11 @@ def login():
                 "time": timestamp()
             })
 
-            input("\nTekan Enter")
+            pause()
             return username, role
         else:
-            raise ValueError("Username atau password salah.")
+            raise ValueError(colored("Username atau Password Salah.", "red"))
     except Exception as e:
         print(f"\nError: {e}")
-        input("\nTekan Enter")
+        pause()
         return None, None

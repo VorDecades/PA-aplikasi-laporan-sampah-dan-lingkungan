@@ -5,9 +5,14 @@ from admin import MENU_ADMIN
 from manager import MENU_MANAGER
 from user import MENU_USER
 from data import load_dummy
+from termcolor import colored
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
+
+def pause():
+    input(colored("\nTekan Enter", "grey"))
+
 
 def menu_input(pesan, opsi):
     clear()
@@ -43,17 +48,17 @@ def main():
                     MENU_USER(username)
                 else:
                     print("Anda Heker, ga boleh masuk.")
-                    input("\nTekan Enter")
+                    pause()
                     clear()
 
             elif pilihan == "Keluar":
                 clear()
-                print("Terima kasih telah menggunakan aplikasi.")
+                print("Terima Kasih Telah Menggunakan Aplikasi.")
                 break
 
         except Exception as e:
             print(f"\nError: {e}")
-            input("\nTekan Enter")
+            pause()
             clear()
 
 if __name__ == "__main__":
