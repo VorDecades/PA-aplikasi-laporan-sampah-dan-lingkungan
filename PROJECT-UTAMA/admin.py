@@ -1,44 +1,51 @@
 import os
+from termcolor import colored
 from InquirerPy import inquirer
 from tabulate import tabulate
-from data import laporan, log_status, timestamp
+from data import laporan, log_status, timestamp, add_report_activity
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
+
+def pause():
+    input(colored("\nTekan Enter", "grey"))
 
 def MENU_ADMIN(username):
     clear()
     while True:
         try:
+            print(colored("\033[1m" + "\n" + "=" * 34 + "\n" + "====== >>> [Menu Admin] <<< ======" + "\n" + "=" * 34 + "\033[0m", "yellow"))
+            print(colored(f"\nSELAMAT DATANG {username}", "cyan"))
             menu = inquirer.select(
-                message="\n============================\n=== >>> [Menu Admin] <<< ===\n============================",
-                choices=["Tampilkan semua laporan", "Tampilkan Laporan Filter", "Buat laporan", "Update status", "Hapus laporan", "Logout"],
+                message=("pilih menu yang ingin diakses: "),
+                choices=["Tampilkan Semua Laporan", "Tampilkan Laporan Filter", "Buat Laporan", "Update Status", "Hapus Laporan", "Logout"],
                 pointer="👉"
             ).execute()
-            clear()
-            if menu == "Tampilkan semua laporan":
-                                READ()
+
+            if menu == "Tampilkan Semua Laporan":
+                READ()
             elif menu == "Tampilkan Laporan Filter":
-                                FILTER_READ()
-            elif menu == "Buat laporan":
-                                CREATE(username)
-            elif menu == "Update status":
-                                UPDATE()
-            elif menu == "Hapus laporan":
-                                DELETE()
+                FILTER_READ()
+            elif menu == "Buat Laporan":
+                CREATE(username)
+            elif menu == "Update Status":
+                UPDATE()
+            elif menu == "Hapus Laporan":
+                DELETE()
             elif menu == "Logout":
-                                break
+                break
         except Exception as e:
-            print(f"\nError: {e}")
-            input("\nTekan Enter")
+            print(colored(f"\nError: {e}", "red"))
+            pause()
 
 def READ():
     clear()
     try:
-        print("=== DAFTAR LAPORAN ===")
+        print(colored("=== DAFTAR LAPORAN ===", "cyan"))
         if not laporan:
-            print("Belum ada laporan.")
-            input("\nTekan Enter")
+            print(colored("Belum Ada Laporan.", "red"))
+            pause()
+            clear()
             return
 
         headers = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal", "User"]
@@ -51,62 +58,61 @@ def READ():
         input("\nTekan Enter")
         clear()
     except Exception as e:
-        print(f"\nError: {e}")
-        input("\nTekan Enter")
-        clear()
+        print(colored(f"\nError: {e}", "red"))
+        pause()
+
 
 def FILTER_READ():
     clear()
     try:
-        print("=== FILTER LAPORAN BERDASARKAN STATUS ===")
+        print(colored("=== FILTER LAPORAN BERDASARKAN STATUS ===", "cyan"))
         status_filter = inquirer.select(
-            message="Pilih status laporan yang ingin ditampilkan:",
+            message="Pilih Status Laporan yang Ingin Ditampilkan:",
             choices=["belum ditindak", "di proses", "sudah ditindak"],
             pointer="👉"
         ).execute()
 
-        # ambil hanya laporan sesuai status
         filtered = {
             id: data for id, data in laporan.items()
-            if data["status"] == status_filter
+            if data["status"] == status_filter.lower()
         }
 
         if not filtered:
-            print(f"Tidak ada laporan dengan status '{status_filter}'.")
+            print(colored(f"Tidak Ada Laporan Dengan Status '{status_filter}'.", "red"))
         else:
-            headers = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal", "User"] # header
+            headers = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal", "User"]
             rows = [
                 [id, data["lokasi"], data["jenis"], data["status"],
-                 data["deskripsi"], log_status.get(id, "Belum ada"), data["User"]] # isi data
-                for id, data in filtered.items()   # munculkan semua data sesuai filter
+                data["deskripsi"], log_status.get(id, "Belum ada"), data["User"]]
+                for id, data in filtered.items()
             ]
-            print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))  
-        input("\nTekan Enter")
+            print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
+
+        pause()
         clear()
 
     except Exception as e:
-        print(f"\nError: {e}")
-        input("\nTekan Enter")
+        print(colored(f"\nError: {e}", "red"))
+        pause()
         clear()
-
 
 def CREATE(username):
     clear()
     try:
-        print("=== CREATE LAPORAN ===")
+        print(colored("=== CREATE LAPORAN ===", "cyan"))
         lokasi = input("Lokasi kejadian: ").strip()
         if not lokasi:
-            raise ValueError("Lokasi tidak boleh kosong.")
+            raise ValueError(colored("Lokasi Tidak Boleh Kosong.", "red"))
 
         jenis = inquirer.select(
-            message="Pilih jenis masalah:",
-            choices=["sampah", "pencemaran", "perusakan"],
+            message="Pilih Jenis Masalah:",
+            choices=["Sampah", "Pencemaran", "Perusakan"],
             pointer="👉"
         ).execute()
 
-        deskripsi = input("Deskripsi singkat: ").strip()
+        deskripsi = input("Deskripsi Singkat: ").strip()
         if not deskripsi:
-            raise ValueError("Deskripsi tidak boleh kosong.")
+            raise ValueError("Deskripsi Tidak Boleh Kosong.")
 
         id = str(len(laporan) + 1)
         laporan[id] = {
@@ -117,59 +123,66 @@ def CREATE(username):
             "User": username
         }
         log_status[id] = timestamp()
-        print("Laporan berhasil dibuat.")
-        input("\nTekan Enter")
+        add_report_activity(id, None, "belum ditindak", username)
+
+        print(colored("Laporan Telah Berhasil Dibuat.", "green"))
+        pause()
         clear()
 
     except Exception as e:
-        print(f"\nError: {e}")
-        input("\nTekan Enter")
+        print(colored(f"\nError: {e}", "red"))
+        pause()
         clear()
 
 def UPDATE():
     clear()
     try:
-        print("=== UPDATE STATUS LAPORAN ===")
-        id = input("Masukkan ID laporan: ").strip()
+        print(colored("=== UPDATE STATUS LAPORAN ===", "cyan"))
+        id = input("Masukkan ID Laporan: ").strip()
         if id not in laporan:
-            raise ValueError("ID tidak ditemukan.")
+            raise ValueError(colored("ID Tidak Ditemukan.", "red"))
 
         status_baru = inquirer.select(
-            message="Pilih status baru:",
+            message="Pilih Status Baru:",
             choices=["belum ditindak", "di proses", "sudah ditindak"],
             pointer="👉"
         ).execute()
 
+        before = laporan[id]["status"]
         laporan[id]["status"] = status_baru
         log_status[id] = timestamp()
-        print("Status berhasil diperbarui.")
-        input("\nTekan Enter")
+        add_report_activity(id, before, status_baru, "admin")
+
+        print(colored("Status Berhasil Diperbarui.", "green"))
+        pause()
         clear()
 
     except Exception as e:
-        print(f"\nError: {e}")
-        input("\nTekan Enter")
+        print(colored(f"\nError: {e}", "red"))
+        pause()
         clear()
 
 def DELETE():
     clear()
     try:
-        print("=== HAPUS LAPORAN ===")
-        id = input("Masukkan ID laporan: ").strip()
+        print(colored("=== HAPUS LAPORAN ===", "red"))
+        id = input("Masukkan ID Laporan: ").strip()
         if id not in laporan:
-            raise ValueError("ID tidak ditemukan.")
+            raise ValueError("ID Tidak Ditemukan.")
 
-        konfirmasi = inquirer.confirm("Yakin ingin menghapus laporan ini?", default=False).execute()
+        konfirmasi = inquirer.confirm("Apakah Anda Yakin Ingin Menghapus Laporan Ini?", default=False).execute()
         if konfirmasi:
+            before = laporan[id]["status"]
             del laporan[id]
             log_status.pop(id, None)
-            print("Laporan dihapus.")
+            add_report_activity(id, before, None, "admin")
+            print(colored("Laporan Dihapus.", "red"))
         else:
-            print("Dibatalkan.")
-        input("\nTekan Enter")
+            print(colored("Dibatalkan.", "yellow"))
+        pause()
         clear()
 
     except Exception as e:
-        print(f"\nError: {e}")
-        input("\nTekan Enter")
+        print(colored(f"\nError: {e}", "red"))
+        pause()
         clear()
