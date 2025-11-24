@@ -3,7 +3,6 @@ from data import log_activity
 from InquirerPy import inquirer
 from termcolor import colored
 from tabulate import tabulate
-from tabulate import tabulate
 from data import users
 from activity import MENU_ACTIVITY
 
