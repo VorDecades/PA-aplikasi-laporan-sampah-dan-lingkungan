@@ -1,69 +1,80 @@
 import os
 from data import users
 from InquirerPy import inquirer
+from termcolor import colored
 from admin import CREATE, READ, FILTER_READ
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+def pause():
+    input(colored("\nTekan Enter", "grey"))
+
 def MENU_USER(username):
+    clear()
     while True:
         try:
+            clear()
+            print(colored("\033[1m" + "\n" + "=" * 37 + "\n" + "====== >>> [Menu Pengguna] <<< ======" + "\n" + "=" * 37 + "\033[0m", "yellow"))
+            print(colored(f"\nSELAMAT DATANG {username}", "cyan"))
             menu = inquirer.select(
-                message="=== >>> [Menu Pengguna] <<< ===",
-                choices=["Buat laporan", "Tampilkan semua laporan", "Tampilkan laporan Filter", "Ubah profil", "Logout"],
+                message="pilih menu yang ingin diakses: ",
+                choices=["Buat Laporan", "Tampilkan Semua Laporan", "Tampilkan Laporan Filter", "Ubah Profil", "Logout"],
                 pointer="👉"
             ).execute()
 
-            clear()
-            if menu == "Buat laporan":
+            if menu == "Buat Laporan":
                 CREATE(username)
-            elif menu == "Tampilkan semua laporan":
+            elif menu == "Tampilkan Semua Laporan":
                 READ()
-            elif menu == "Tampilkan laporan Filter":
+            elif menu == "Tampilkan Laporan Filter":
                 FILTER_READ()
-            elif menu == "Ubah profil":
+            elif menu == "Ubah Profil":
                 UPDATE_PROFILE()
             elif menu == "Logout":
                 break
         except Exception as e:
             print(f"\nError: {e}")
-            input("\nTekan Enter")
+            pause()
+            clear()
 
 def UPDATE_PROFILE():
     clear()
     try:
-        print("=== UBAH PROFIL ===")
-        username = input("Masukkan username saat ini: ").strip()
-        password = input("Masukkan password saat ini: ").strip()
+        print(colored("=== UBAH PROFIL ===", "cyan"))
+        username = input("Masukkan Username Saat Ini: ").strip()
+        password = input("Masukkan Password Saat Ini: ").strip()
 
         # Validasi kredensial
         if username not in users or users[username]["password"] != password:
-            raise ValueError("Username atau password salah.")
+            raise ValueError(colored("Username atau Password Salah.", "red"))
 
         pilihan = inquirer.select(
-            message="Apa yang ingin Anda ubah?",
+            message="Apa yang Ingin Anda Ubah?",
             choices=["Username", "Password"],
-            pointer="→"
+            pointer="👉"
         ).execute()
 
         if pilihan == "Username":
-            new_username = input("Masukkan username baru: ").strip()
+            new_username = input("Masukkan Username Baru: ").strip()
             if not new_username:
-                raise ValueError("Username baru tidak boleh kosong.")
+                raise ValueError(colored("Username Baru Tidak Boleh Kosong.", "red"))
             if new_username in users:
-                raise ValueError("Username sudah digunakan.")
+                raise ValueError(colored("Username Sudah Digunakan.", "red"))
             users[new_username] = users.pop(username)
-            print("Username berhasil diubah.")
+            print(colored("Username Berhasil Diubah.", "green"))
 
         elif pilihan == "Password":
-            new_password = input("Masukkan password baru (min 6 karakter): ").strip()
+            new_password = input("Masukkan Password Baru (min 6 karakter): ").strip()
             if len(new_password) < 6:
-                raise ValueError("Password terlalu pendek.")
+                raise ValueError(colored("Password Terlalu Pendek.", "red"))
             users[username]["password"] = new_password
-            print("Password berhasil diubah.")
+            print(colored("Password Berhasil Diubah.", "green"))
 
-        input("\nTekan Enter")
+        pause()
+        clear()
+
     except Exception as e:
         print(f"\nError: {e}")
-        input("\nTekan Enter")
+        pause()
+        clear()
