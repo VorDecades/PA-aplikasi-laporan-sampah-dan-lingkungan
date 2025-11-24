@@ -41,7 +41,8 @@ def MENU_ADMIN(username):
 def READ():
     clear()
     try:
-        print(colored("=== DAFTAR LAPORAN ===", "cyan"))
+        width = 90
+        print(colored("[ SEMUA LAPORAN ]".center(width), "yellow"))
         if not laporan:
             print(colored("Belum Ada Laporan.", "red"))
             pause()
@@ -51,7 +52,7 @@ def READ():
         headers = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal", "User"]
         rows = [
             [id, data["lokasi"], data["jenis"], data["status"],
-            data["deskripsi"], log_status.get(id, "Belum ada"), data["User"]]
+            data["deskripsi"][:20] + "...", log_status.get(id, "Belum ada"), data["User"]]
             for id, data in laporan.items()
         ]
         print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
