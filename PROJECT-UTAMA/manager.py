@@ -18,7 +18,6 @@ def MENU_MANAGER(username):
             clear()
             print(colored("\033[1m" + "\n" + "=" * 36 + "\n" + "====== >>> [Menu Manager] <<< ======" + "\n" + "=" * 36 + "\033[0m", "yellow"))
             print(colored(f"\nSELAMAT DATANG {username}", "cyan"))
-            clear()
             menu = inquirer.select(
                 message="pilih menu yang ingin diakses: ",
                 choices=[
@@ -28,15 +27,6 @@ def MENU_MANAGER(username):
                     "Buat Akun",
                     "Update Akun",
                     "Hapus Akun",
-                    "Logout"
-                ],
-                message="=== >>> [Menu Manager] <<< ===",
-                choices=[
-                    "Tampilkan semua akun",
-                    "Tampilkan akun filter",
-                    "Buat akun",
-                    "Update akun",
-                    "Hapus akun",
                     "Logout"
                 ],
                 pointer="👉"
@@ -54,18 +44,7 @@ def MENU_MANAGER(username):
                 UPDATE_ACC()
             elif menu == "Hapus Akun":
                 DELETE_ACC()
-            if menu == "Tampilkan semua akun":
-                READ_ACC()
-            elif menu == "Tampilkan akun filter":
-                READ_FILTER_ACC()
-            elif menu == "Buat akun":
-                CREATE_ACC()
-            elif menu == "Update akun":
-                UPDATE_ACC()
-            elif menu == "Hapus akun":
-                DELETE_ACC()
             elif menu == "Logout":
-                break
                 break
         except Exception as e:
             print(f"\nError: {e}")
@@ -77,10 +56,6 @@ def READ_ACC():
     rows = [[username, info["password"], info["role"]] for username, info in users.items()]
     print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
     pause()
-    headers = ["Username", "Password", "Role"]
-    rows = [[username, info["password"], info["role"]] for username, info in users.items()]
-    print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
-    input("\nTekan Enter")
 
 def READ_FILTER_ACC():
     clear()
@@ -92,7 +67,6 @@ def READ_FILTER_ACC():
         ).execute()
 
         filtered = {u: info for u, info in users.items() if info["role"] == role_filter}
-        filtered = {u: info for u, info in users.items() if info["role"] == role_filter}
 
         if not filtered:
             print(colored(f"Tidak Ada Akun dengan Role '{role_filter}'.", "yellow"))
@@ -102,11 +76,6 @@ def READ_FILTER_ACC():
             print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
 
         pause()
-            headers = ["Username", "Password", "Role"]
-            rows = [[u, info["password"], info["role"]] for u, info in filtered.items()]
-            print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
-
-        input("\nTekan Enter")
     except Exception as e:
         print(f"\nError: {e}")
         pause()
@@ -115,7 +84,6 @@ def CREATE_ACC():
     clear()
     try:
         username = input("Username Baru: ").strip()
-        username = input("Username baru: ").strip()
         password = input("Password (min 6 karakter): ").strip()
 
         if not username or not password:
@@ -142,13 +110,11 @@ def UPDATE_ACC():
     clear()
     try:
         username = input(colored("Masukkan Username yang Ingin Diubah: ", "cyan")).strip()
-        username = input("Masukkan username yang ingin diubah: ").strip()
         if username not in users:
             raise ValueError(colored("Username Tidak Ditemukan.", "red"))
 
         pilihan = inquirer.select(
             message="Apa yang Ingin Diubah?",
-            message="Apa yang ingin diubah?",
             choices=["Password", "Role"],
             pointer="👉"
         ).execute()
@@ -157,7 +123,6 @@ def UPDATE_ACC():
             current_password = users[username]["password"]
             new_password = input("Masukkan Password Baru (min 6 karakter): ").strip()
 
-            new_password = input("Masukkan password baru (min 6 karakter): ").strip()
             if len(new_password) < 6:
                 raise ValueError(colored("Password Terlalu Pendek.", "red"))
             if new_password == current_password:
@@ -165,7 +130,6 @@ def UPDATE_ACC():
 
             users[username]["password"] = new_password
             print(colored("\nPassword Berhasil Diubah.", "green"))
-            print("\nPassword berhasil diubah.")
 
         elif pilihan == "Role":
             current_role = users[username]["role"]
@@ -181,7 +145,6 @@ def UPDATE_ACC():
             users[username]["role"] = new_role
             print(colored("\nRole Berhasil Diubah.", "green"))
         pause()
-            print("\nRole berhasil diubah.")
 
     except Exception as e:
         print(f"\nError: {e}")
@@ -192,7 +155,6 @@ def DELETE_ACC():
     clear()
     try:
         username = input(colored("Masukkan Username yang Ingin Dihapus: ", "cyan")).strip()
-        username = input("Masukkan username yang ingin dihapus: ").strip()
         if username not in users:
             raise ValueError(colored("Username Tidak Ditemukan.", "red"))
         if username == "admin":
@@ -203,23 +165,13 @@ def DELETE_ACC():
             default=False
         ).execute()
 
-        konfirmasi = inquirer.confirm(
-            message=f"Yakin ingin menghapus akun '{username}'?",
-            default=False
-        ).execute()
-
         if konfirmasi:
             del users[username]
             print(colored("\nAkun Berhasil Dihapus.", "green"))
-            print("\nAkun berhasil dihapus.")
         else:
             print(colored("\nPenghapusan Dibatalkan.", "yellow"))
         pause()
 
-            print("\nPenghapusan dibatalkan.")
-
-        input("\nTekan Enter")
     except Exception as e:
         print(f"\nError: {e}")
         pause()
-        input("\nTekan Enter")
