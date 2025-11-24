@@ -2,7 +2,7 @@ import os
 from termcolor import colored
 from InquirerPy import inquirer
 from tabulate import tabulate
-from data import laporan, log_status, timestamp
+from data import laporan, log_status, timestamp, add_report_activity
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -14,12 +14,14 @@ def MENU_ADMIN(username):
     clear()
     while True:
         try:
+            print(colored("\033[1m" + "\n" + "=" * 34 + "\n" + "====== >>> [Menu Admin] <<< ======" + "\n" + "=" * 34 + "\033[0m", "yellow"))
+            print(colored(f"\nSELAMAT DATANG {username}", "cyan"))
             menu = inquirer.select(
-                message=("\n============================\n=== >>> [Menu Admin] <<< ===\n============================"),
+                message=("pilih menu yang ingin diakses: "),
                 choices=["Tampilkan Semua Laporan", "Tampilkan Laporan Filter", "Buat Laporan", "Update Status", "Hapus Laporan", "Logout"],
                 pointer="👉"
             ).execute()
-            clear()
+
             if menu == "Tampilkan Semua Laporan":
                 READ()
             elif menu == "Tampilkan Laporan Filter":
@@ -66,13 +68,13 @@ def FILTER_READ():
         print(colored("=== FILTER LAPORAN BERDASARKAN STATUS ===", "cyan"))
         status_filter = inquirer.select(
             message="Pilih Status Laporan yang Ingin Ditampilkan:",
-            choices=["Belum Ditindak", "Diproses", "Sudah Ditindak"],
+            choices=["belum ditindak", "di proses", "sudah ditindak"],
             pointer="👉"
         ).execute()
 
         filtered = {
             id: data for id, data in laporan.items()
-            if data["status"] == status_filter
+            if data["status"] == status_filter.lower()
         }
 
         if not filtered:
@@ -117,10 +119,11 @@ def CREATE(username):
             "lokasi": lokasi,
             "jenis": jenis,
             "deskripsi": deskripsi,
-            "status": "Belum Ditindak",
+            "status": "belum ditindak",
             "User": username
         }
         log_status[id] = timestamp()
+        add_report_activity(id, None, "belum ditindak", username)
 
         print(colored("Laporan Telah Berhasil Dibuat.", "green"))
         pause()
@@ -141,12 +144,14 @@ def UPDATE():
 
         status_baru = inquirer.select(
             message="Pilih Status Baru:",
-            choices=["Belum Ditindak", "Diproses", "Sudah Ditindak"],
+            choices=["belum ditindak", "di proses", "sudah ditindak"],
             pointer="👉"
         ).execute()
 
+        before = laporan[id]["status"]
         laporan[id]["status"] = status_baru
         log_status[id] = timestamp()
+        add_report_activity(id, before, status_baru, "admin")
 
         print(colored("Status Berhasil Diperbarui.", "green"))
         pause()
@@ -167,8 +172,10 @@ def DELETE():
 
         konfirmasi = inquirer.confirm("Apakah Anda Yakin Ingin Menghapus Laporan Ini?", default=False).execute()
         if konfirmasi:
+            before = laporan[id]["status"]
             del laporan[id]
             log_status.pop(id, None)
+            add_report_activity(id, before, None, "admin")
             print(colored("Laporan Dihapus.", "red"))
         else:
             print(colored("Dibatalkan.", "yellow"))

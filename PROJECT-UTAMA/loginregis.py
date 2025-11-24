@@ -11,7 +11,14 @@ def pause():
 def register():
     clear()
     try:
-        print(colored("=== REGISTRASI ===", "cyan"))
+        print(colored(
+        "\033[1m"                # aktifkan bold
+        + "\n" + "=" * 32        # garis atas
+        + "\n" + "====== >>> [REGISTER] <<< ======"  # judul menu
+        + "\n" + "=" * 32        # garis bawah
+        + "\033[0m\n",             # reset bold
+        "yellow"                 # warna teks
+        ))
         username = input("Username: ").strip()
         password = input("Password (min 6 karakter): ").strip()
 
@@ -32,7 +39,14 @@ def register():
 def login():
     clear()
     try:
-        print(colored("=== LOGIN ===", "cyan"))
+        print(colored(
+        "\033[1m"                # aktifkan bold
+        + "\n" + "=" * 29        # garis atas
+        + "\n" + "====== >>> [LOGIN] <<< ======"  # judul menu
+        + "\n" + "=" * 29        # garis bawah
+        + "\033[0m\n",             # reset bold
+        "yellow"                 # warna teks
+        ))
         username = input("Username: ").strip()
         password = input("Password: ").strip()
 

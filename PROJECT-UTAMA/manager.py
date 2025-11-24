@@ -4,6 +4,7 @@ from InquirerPy import inquirer
 from termcolor import colored
 from tabulate import tabulate
 from data import users
+from activity import MENU_ACTIVITY
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -11,14 +12,16 @@ def clear():
 def pause():
     input(colored("\nTekan Enter", "grey"))
 
-def MENU_MANAGER():
+def MENU_MANAGER(username):
     while True:
         try:
             clear()
+            print(colored("\033[1m" + "\n" + "=" * 36 + "\n" + "====== >>> [Menu Manager] <<< ======" + "\n" + "=" * 36 + "\033[0m", "yellow"))
+            print(colored(f"\nSELAMAT DATANG {username}", "cyan"))
             menu = inquirer.select(
-                message="\n==============================\n=== >>> [Menu Manager] <<< ===\n==============================",
+                message="pilih menu yang ingin diakses: ",
                 choices=[
-                    "Log Activity",
+                    "Activity",
                     "Tampilkan Semua Akun",
                     "Tampilkan Akun Filter",
                     "Buat Akun",
@@ -29,8 +32,8 @@ def MENU_MANAGER():
                 pointer="👉"
             ).execute()
             
-            if menu == "Log Activity":
-                READ_LOG_ACTIVITY()
+            if menu == "Activity":
+                MENU_ACTIVITY()
             elif menu == "Tampilkan Semua Akun":
                 READ_ACC()
             elif menu == "Tampilkan Akun Filter":
@@ -46,18 +49,6 @@ def MENU_MANAGER():
         except Exception as e:
             print(f"\nError: {e}")
             pause()
-
-def READ_LOG_ACTIVITY():
-    clear()
-    print(colored("=== LOG ACTIVITY ===", "cyan"))
-    if not log_activity:
-        print(colored("Belum Ada Aktivitas Login.", "yellow"))
-    else:
-        headers = ["User", "Role", "Waktu Login"]
-        rows = [[log["user"], log["role"], log["time"]] for log in log_activity]
-        print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
-    pause()
-
 
 def READ_ACC():
     clear()

@@ -12,23 +12,26 @@ def clear():
 
 def pause():
     input(colored("\nTekan Enter", "grey"))
-
-
-def menu_input(pesan, opsi):
-    clear()
-    return inquirer.select(
-        message=pesan,
-        choices=opsi,
-        pointer="👉",
-        default=opsi[0]
-    ).execute()
     
-
 def main():
     load_dummy()
     while True:
         try:
-            pilihan = menu_input("===== >>> [MENU UTAMA] <<< =====", ["Login", "Register", "Keluar"])
+            width = 45  # panjang garis
+            print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
+            print(colored("[ SELAMAT DATANG ]".center(width), "yellow"))
+            print(colored("[ APLIKASI PELAPORAN SAMPAH ]".center(width), "yellow"))
+            print(colored("[ DAN LINGKUNGAN ]".center(width), "yellow"))
+            print(colored("=" * width + "\033[0m", "yellow"))
+            pilihan = inquirer.select(
+                message="pilih menu yang ingin diakses: ",
+                choices=[
+                    "Login",
+                    "Register",
+                    "Keluar"
+                ],
+                pointer="👉"
+            ).execute()
 
             if pilihan == "Register":
                 clear()
@@ -41,7 +44,7 @@ def main():
                     continue
 
                 if role == "manager":
-                    MENU_MANAGER()
+                    MENU_MANAGER(username)
                 elif role == "admin":
                     MENU_ADMIN(username)
                 elif role == "user":

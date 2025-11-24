@@ -14,13 +14,15 @@ def MENU_USER(username):
     clear()
     while True:
         try:
+            clear()
+            print(colored("\033[1m" + "\n" + "=" * 37 + "\n" + "====== >>> [Menu Pengguna] <<< ======" + "\n" + "=" * 37 + "\033[0m", "yellow"))
+            print(colored(f"\nSELAMAT DATANG {username}", "cyan"))
             menu = inquirer.select(
-                message="\n===============================\n=== >>> [Menu Pengguna] <<< ===\n===============================",
+                message="pilih menu yang ingin diakses: ",
                 choices=["Buat Laporan", "Tampilkan Semua Laporan", "Tampilkan Laporan Filter", "Ubah Profil", "Logout"],
                 pointer="👉"
             ).execute()
 
-            clear()
             if menu == "Buat Laporan":
                 CREATE(username)
             elif menu == "Tampilkan Semua Laporan":
