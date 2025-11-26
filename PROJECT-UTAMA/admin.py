@@ -45,12 +45,8 @@ def MENU_ADMIN(username):
 
 def READ():
     try:
-        clear()
-        width = 110
-        print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
-        print(colored("[ DAFTAR SEMUA LAPORAN ]".center(width), "yellow"))
-        print(colored("=" * width + "\033[0m", "yellow"))
-    
+        width = 90
+        print(colored("[ SEMUA LAPORAN ]".center(width), "yellow"))
         if not laporan:
             print(colored("Belum Ada Laporan.", "red"))
             pause()
@@ -161,6 +157,16 @@ def UPDATE():
         id = input("Masukkan ID Laporan: ").strip()
         if id not in laporan:
             raise ValueError(colored("ID Tidak Ditemukan.", "red"))
+        
+        # ===== Tampilkan data laporan berdasarkan ID =====
+        headers = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal", "User"]
+        selected = laporan[id]
+        row = [[id, selected["lokasi"], selected["jenis"], selected["status"],
+               selected["deskripsi"], log_status.get(id, "Belum ada"), selected["User"]]]
+        
+        print("\nData Laporan:")
+        print(tabulate(row, headers=headers, tablefmt="rounded_outline"))
+
 
         status_baru = inquirer.select(
             message="Pilih Status Baru:",
@@ -193,6 +199,15 @@ def DELETE():
         id = input("Masukkan ID Laporan: ").strip()
         if id not in laporan:
             raise ValueError("ID Tidak Ditemukan.")
+        
+        # ===== Tampilkan data laporan berdasarkan ID =====
+        headers = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal", "User"]
+        selected = laporan[id]
+        row = [[id, selected["lokasi"], selected["jenis"], selected["status"],
+               selected["deskripsi"], log_status.get(id, "Belum ada"), selected["User"]]]
+        
+        print("\nData Laporan:")
+        print(tabulate(row, headers=headers, tablefmt="rounded_outline"))
 
         konfirmasi = inquirer.confirm("Apakah Anda Yakin Ingin Menghapus Laporan Ini?", default=False).execute()
         if konfirmasi:

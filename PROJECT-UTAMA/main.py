@@ -15,20 +15,17 @@ def pause():
     input(colored("\nTekan Enter", "grey"))
     
 def utama():
+    clear()
     load_dummy()
     while True:
         try:
             clear()
             width = 45  # panjang garis
-            BOLD = "\033[1m"
-            RESET = "\033[0m"
-            UL = "\033[4m"
-
-            print(colored(BOLD + UL + "\n" + "=" * width + RESET, "yellow"))
-            print(colored(BOLD + "[ SELAMAT DATANG ]".center(width) + RESET, "yellow"))
-            print(colored(BOLD + "[ APLIKASI PELAPORAN SAMPAH ]".center(width) + RESET, "yellow"))
-            print(colored(BOLD + "[ DAN LINGKUNGAN ]".center(width) + RESET, "yellow"))
-            print(colored(BOLD + UL + "=" * width + RESET, "yellow"))
+            print(colored("\n" + "=" * width, "yellow"))
+            print(colored("[ SELAMAT DATANG ]".center(width), "yellow"))
+            print(colored("[ APLIKASI PELAPORAN SAMPAH ]".center(width), "yellow"))
+            print(colored("[ DAN LINGKUNGAN ]".center(width), "yellow"))
+            print(colored("=" * width, "yellow"))
             pilihan = inquirer.select(
                 message="pilih menu yang ingin diakses: ",
                 choices=[
