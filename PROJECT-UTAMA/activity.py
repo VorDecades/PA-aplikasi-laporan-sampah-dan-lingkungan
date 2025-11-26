@@ -14,7 +14,10 @@ def MENU_ACTIVITY():
     while True:
         try:
             clear()
-            print(colored("\033[1m" + "\n" + "=" * 36 + "\n" + "====== >>> [Activity] <<< ======" + "\n" + "=" * 36 + "\033[0m", "yellow"))
+            width = 45  
+            print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
+            print(colored("[ MENU ACTIVITY ]".center(width), "yellow"))
+            print(colored("=" * width + "\033[0m", "yellow"))
             pilihan = inquirer.select(
                 message="pilih jenis aktivitas yang ingin ditampilkan: ",
                 choices=["Log Login", "Pembuatan Laporan", "Update Laporan", "Hapus Laporan", "Kembali"],
@@ -38,7 +41,10 @@ def MENU_ACTIVITY():
 
 def READ_LOG_ACTIVITY():
     clear()
-    print(colored("=== LOG LOGIN ===", "cyan"))
+    width = 40  
+    print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
+    print(colored("[ LOG LOGIN ]".center(width), "yellow"))
+    print(colored("=" * width + "\033[0m", "yellow"))
     if not log_activity:
         print(colored("Belum ada aktivitas login.", "yellow"))
     else:
