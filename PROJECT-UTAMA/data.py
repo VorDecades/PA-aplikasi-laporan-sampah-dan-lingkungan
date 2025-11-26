@@ -9,7 +9,7 @@ users = {
 
 laporan = {} # menyimpan data laporan
 log_activity = [] # menyimpan log aktivitas login
-report_activity = []
+report_activity = [] # menyimpan log aktivitas laporan
 log_status = {} # menyimpan log status laporan
 
 def timestamp():
@@ -26,13 +26,14 @@ def add_report_activity(id, before, after, actor):
 
 def load_dummy():
     try:
-        with open("load_dummy.csv", "r", encoding="utf-8") as f: # mencari file dan memastikan file ada
-            lines = f.readlines() # membaca semua baris dalam file
-            for line in lines[1:]:  # skip header
-                parts = line.strip().split(";")  # pakai ; sebagai delimiter
-                if len(parts) < 7: # jika data kurang, maka
+        # mencari file dan memastikan file ada
+        with open("load_dummy.csv", "r", encoding="utf-8") as f: 
+            lines = f.readlines()
+            for line in lines[1:]:
+                parts = line.strip().split(";")
+                if len(parts) < 7:
                     continue
-                id, lokasi, jenis, deskripsi, status, user, tanggal = parts # memisahkan data
+                id, lokasi, jenis, deskripsi, status, user, tanggal = parts
                 laporan[id] = {
                     "lokasi": lokasi,
                     "jenis": jenis,
