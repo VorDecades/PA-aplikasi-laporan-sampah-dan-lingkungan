@@ -45,12 +45,8 @@ def MENU_ADMIN(username):
 
 def READ():
     try:
-        clear()
-        width = 110
-        print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
-        print(colored("[ DAFTAR SEMUA LAPORAN ]".center(width), "yellow"))
-        print(colored("=" * width + "\033[0m", "yellow"))
-    
+        width = 90
+        print(colored("[ SEMUA LAPORAN ]".center(width), "yellow"))
         if not laporan:
             print(colored("Belum Ada Laporan.", "red"))
             pause()
