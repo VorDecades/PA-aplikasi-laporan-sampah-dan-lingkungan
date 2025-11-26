@@ -15,7 +15,10 @@ def MENU_USER(username):
     while True:
         try:
             clear()
-            print(colored("\033[1m" + "\n" + "=" * 37 + "\n" + "====== >>> [Menu Pengguna] <<< ======" + "\n" + "=" * 37 + "\033[1m", "yellow"))
+            width = 45  
+            print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
+            print(colored("[ MENU PENGGUNA ]".center(width), "yellow"))
+            print(colored("=" * width + "\033[0m", "yellow"))
             print(colored(f"\nSELAMAT DATANG {username}\n", "cyan"))
             menu = inquirer.select(
                 message="pilih menu yang ingin diakses: ",
@@ -42,7 +45,10 @@ def MENU_USER(username):
 def UPDATE_PROFILE():
     clear()
     try:
-        print(colored("\033[1m" + "\n" + "=" * 37 + "\n" + "====== >>> [Ubah Profil] <<< ======" + "\n" + "=" * 37 + "\033[0m", "yellow"))
+        width = 45  
+        print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
+        print(colored("[ UBAH PROFIL ]".center(width), "yellow"))
+        print(colored("=" * width + "\033[0m", "yellow"))
         username = input("Masukkan Username Saat Ini: ").strip()
         password = input("Masukkan Password Saat Ini: ").strip()
 

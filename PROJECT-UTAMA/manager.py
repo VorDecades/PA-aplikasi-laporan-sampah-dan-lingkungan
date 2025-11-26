@@ -17,8 +17,11 @@ def MENU_MANAGER(username):
     while True:
         try:
             clear()
-            print(colored("\033[1m" + "\n" + "=" * 36 + "\n" + "====== >>> [Menu Manager] <<< ======" + "\n" + "=" * 36 + "\033[0m", "yellow"))
-            print(colored(f"\nSELAMAT DATANG {username}", "cyan"))
+            width = 45  
+            print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
+            print(colored("[ MENU MANAGER ]".center(width), "yellow"))
+            print(colored("=" * width + "\033[0m", "yellow"))
+            print(colored(f"\nSELAMAT DATANG {username}\n", "cyan"))
             menu = inquirer.select(
                 message="pilih menu yang ingin diakses: ",
                 choices=[

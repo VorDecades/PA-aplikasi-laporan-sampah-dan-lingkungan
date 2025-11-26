@@ -100,7 +100,6 @@ def FILTER_READ():
                 for id, data in filtered.items()
             ]
             print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
-
         pause()
         clear()
 
