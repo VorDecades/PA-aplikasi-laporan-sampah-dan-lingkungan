@@ -12,6 +12,7 @@ def clear():
 def pause():
     input(colored("\nTekan Enter", "grey"))
 
+# AJIS
 def MENU_MANAGER(username):
     while True:
         try:
@@ -50,6 +51,7 @@ def MENU_MANAGER(username):
             print(f"\nError: {e}")
             pause()
 
+#AFIF
 def READ_ACC():
     clear()
     headers = ["Username", "Password", "Role"]
