@@ -33,7 +33,8 @@ def MENU_MANAGER(username):
                     "Hapus Akun",
                     "Logout"
                 ],
-                pointer="👉"
+                pointer="👉",
+                qmark=""
             ).execute()
             
             if menu == "Activity":
@@ -57,6 +58,10 @@ def MENU_MANAGER(username):
 #AFIF
 def READ_ACC():
     clear()
+    width = 38
+    print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
+    print(colored("[ DAFTAR SEMUA AKUN ]".center(width), "yellow"))
+    print(colored("=" * width + "\033[0m", "yellow"))
     headers = ["Username", "Password", "Role"]
     rows = [[username, info["password"], info["role"]] for username, info in users.items()]
     print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
@@ -68,7 +73,8 @@ def READ_FILTER_ACC():
         role_filter = inquirer.select(
             message="Pilih Role yang Ingin Ditampilkan:",
             choices=["admin", "user", "manager"],
-            pointer="👉"
+            pointer="👉",
+            qmark=""
         ).execute()
 
         filtered = {u: info for u, info in users.items() if info["role"] == role_filter}
@@ -101,7 +107,8 @@ def CREATE_ACC():
         role = inquirer.select(
             message="Pilih Role Untuk Akun Baru:",
             choices=["admin", "user", "manager"],
-            pointer="👉"
+            pointer="👉",
+            qmark=""
         ).execute()
 
         users[username] = {"password": password, "role": role}
@@ -121,7 +128,8 @@ def UPDATE_ACC():
         pilihan = inquirer.select(
             message="Apa yang Ingin Diubah?",
             choices=["Password", "Role"],
-            pointer="👉"
+            pointer="👉",
+            qmark=""
         ).execute()
 
         if pilihan == "Password":
@@ -141,7 +149,8 @@ def UPDATE_ACC():
             new_role = inquirer.select(
                 message=f"Role Saat Ini: {current_role}. Pilih Role Baru:",
                 choices=["admin", "user", "manager"],
-                pointer="👉"
+                pointer="👉",
+                qmark=""
             ).execute()
 
             if new_role == current_role:

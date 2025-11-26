@@ -55,6 +55,10 @@ def READ_LOG_ACTIVITY():
 
 def READ_REPORT_ACTIVITY(filter_type):
     clear()
+    width = 74  
+    print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
+    print(colored("[ LOG LAPORAN ]".center(width), "yellow"))
+    print(colored("=" * width + "\033[0m", "yellow"))
     if not report_activity:
         print(colored("Belum ada aktivitas laporan.", "yellow"))
         pause()

@@ -56,7 +56,7 @@ def READ():
             pause()
             clear()
             return
-
+        
         headers = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal", "User"]
         rows = [
             [id, data["lokasi"], data["jenis"], data["status"],
@@ -161,6 +161,15 @@ def UPDATE():
         id = input("Masukkan ID Laporan: ").strip()
         if id not in laporan:
             raise ValueError(colored("ID Tidak Ditemukan.", "red"))
+        
+        # ===== Tampilkan data laporan berdasarkan ID =====
+        headers = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal", "User"]
+        selected = laporan[id]
+        rows = [[id, selected["lokasi"], selected["jenis"], selected["status"],
+               selected["deskripsi"], log_status.get(id, "Belum ada"), selected["User"]]]
+        
+        print("\nData Laporan:")
+        print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
 
         status_baru = inquirer.select(
             message="Pilih Status Baru:",
@@ -193,6 +202,14 @@ def DELETE():
         id = input("Masukkan ID Laporan: ").strip()
         if id not in laporan:
             raise ValueError("ID Tidak Ditemukan.")
+        
+        headers = ["ID", "Lokasi", "Jenis", "Status", "Deskripsi", "Tanggal", "User"]
+        selected = laporan[id]
+        rows = [[id, selected["lokasi"], selected["jenis"], selected["status"],
+               selected["deskripsi"], log_status.get(id, "Belum ada"), selected["User"]]]
+        
+        print("\nData Laporan:")
+        print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
 
         konfirmasi = inquirer.confirm("Apakah Anda Yakin Ingin Menghapus Laporan Ini?", default=False).execute()
         if konfirmasi:
