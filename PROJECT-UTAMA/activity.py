@@ -18,7 +18,8 @@ def MENU_ACTIVITY():
             pilihan = inquirer.select(
                 message="pilih jenis aktivitas yang ingin ditampilkan: ",
                 choices=["Log Login", "Pembuatan Laporan", "Update Laporan", "Hapus Laporan", "Kembali"],
-                pointer="👉"
+                pointer="👉",
+                qmark=""
             ).execute()
 
             if pilihan == "Log Login":
@@ -53,7 +54,7 @@ def READ_REPORT_ACTIVITY(filter_type):
         pause()
         return
 
-    headers = ["ID", "Status Sebelum", "Status Sesudah", "Actor", "Waktu"]
+    headers = ["id", "Status Sebelum", "Status Sesudah", "Actor", "Waktu"]
     rows = []
 
     for log in report_activity:
@@ -62,11 +63,11 @@ def READ_REPORT_ACTIVITY(filter_type):
         elif filter_type == "update" and log["before"] and log["after"]:
             rows.append([log["id"], log["before"], log["after"], log["actor"], log["time"]])
         elif filter_type == "delete" and log["after"] is None:
-            rows.append([log["id"], log["before"], "di hapus", log["actor"], log["time"]])
+            rows.append([log["id"], log["before"], "dihapus", log["actor"], log["time"]])
 
     if not rows:
         print(colored("Tidak ada data untuk filter ini.", "yellow"))
     else:
         print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
-
     pause()
+

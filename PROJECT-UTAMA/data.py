@@ -7,10 +7,10 @@ users = {
     "ajis": {"password": "ajis123", "role": "woi"}
 }
 
-laporan = {} # menyimpan data laporan
-log_activity = [] # menyimpan log aktivitas login
-report_activity = []
-log_status = {} # menyimpan log status laporan
+laporan = {} #menyimpan data laporan
+log_activity = [] #log login
+report_activity = [] #log laporan
+log_status = {} #log status laporan
 
 def timestamp():
     return datetime.now().strftime("%d-%m-%Y %H:%M") # format tanggal dan waktu
@@ -26,13 +26,13 @@ def add_report_activity(id, before, after, actor):
 
 def load_dummy():
     try:
-        with open("load_dummy.csv", "r", encoding="utf-8") as f: # mencari file dan memastikan file ada
-            lines = f.readlines() # membaca semua baris dalam file
-            for line in lines[1:]:  # skip header
-                parts = line.strip().split(";")  # pakai ; sebagai delimiter
-                if len(parts) < 7: # jika data kurang, maka
+        with open("load_dummy.csv", "r", encoding="utf-8") as f:
+            lines = f.readlines()
+            for line in lines[1:]:
+                parts = line.strip().split(";")
+                if len(parts) < 7:
                     continue
-                id, lokasi, jenis, deskripsi, status, user, tanggal = parts # memisahkan data
+                id, lokasi, jenis, deskripsi, status, user, tanggal = parts
                 laporan[id] = {
                     "lokasi": lokasi,
                     "jenis": jenis,
@@ -43,4 +43,3 @@ def load_dummy():
                 log_status[id] = tanggal
     except FileNotFoundError:
         print("File load_dummy.csv tidak ditemukan.")
-

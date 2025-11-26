@@ -12,16 +12,16 @@ def pause():
     input(colored("\nTekan Enter", "grey"))
 
 def MENU_USER(username):
-    clear()
     while True:
         try:
             clear()
-            print(colored("\033[1m" + "\n" + "=" * 37 + "\n" + "====== >>> [Menu Pengguna] <<< ======" + "\n" + "=" * 37 + "\033[0m", "yellow"))
-            print(colored(f"\nSELAMAT DATANG {username}", "cyan"))
+            print(colored("\033[1m" + "\n" + "=" * 37 + "\n" + "====== >>> [Menu Pengguna] <<< ======" + "\n" + "=" * 37 + "\033[1m", "yellow"))
+            print(colored(f"\nSELAMAT DATANG {username}\n", "cyan"))
             menu = inquirer.select(
                 message="pilih menu yang ingin diakses: ",
                 choices=["Buat Laporan", "Tampilkan Semua Laporan", "Tampilkan Laporan Filter", "Ubah Profil", "Logout"],
-                pointer="👉"
+                pointer="👉",
+                qmark=""
             ).execute()
 
             if menu == "Buat Laporan":
@@ -42,7 +42,7 @@ def MENU_USER(username):
 def UPDATE_PROFILE():
     clear()
     try:
-        print(colored("=== UBAH PROFIL ===", "cyan"))
+        print(colored("\033[1m" + "\n" + "=" * 37 + "\n" + "====== >>> [Ubah Profil] <<< ======" + "\n" + "=" * 37 + "\033[0m", "yellow"))
         username = input("Masukkan Username Saat Ini: ").strip()
         password = input("Masukkan Password Saat Ini: ").strip()
 
@@ -53,7 +53,8 @@ def UPDATE_PROFILE():
         pilihan = inquirer.select(
             message="Apa yang Ingin Anda Ubah?",
             choices=["Username", "Password"],
-            pointer="👉"
+            pointer="👉",
+            qmark=""
         ).execute()
 
         if pilihan == "Username":

@@ -12,18 +12,19 @@ def pause():
     input(colored("\nTekan Enter", "grey"))
 
 def MENU_ADMIN(username):
-    clear()
     while True:
         try:
+            clear()
             width = 45  
             print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
             print(colored("[ MENU ADMIN ]".center(width), "yellow"))
-            print(colored(f"[ SELAMAT DATANG {username} ]".center(width), "yellow"))
             print(colored("=" * width + "\033[0m", "yellow"))
+            print(colored(f"\nSELAMAT DATANG {username}\n", "cyan"))
             menu = inquirer.select(
                 message=("Pilih Menu yang Ingin Diakses: "),
                 choices=["Tampilkan Semua Laporan", "Tampilkan Laporan Filter", "Buat Laporan", "Update Status", "Hapus Laporan", "Logout"],
-                pointer="👉"
+                pointer="👉",
+                qmark=""
             ).execute()
 
             if menu == "Tampilkan Semua Laporan":
@@ -43,8 +44,8 @@ def MENU_ADMIN(username):
             pause()
 
 def READ():
-    clear()
     try:
+        clear()
         width = 110
         print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
         print(colored("[ DAFTAR SEMUA LAPORAN ]".center(width), "yellow"))
@@ -71,8 +72,8 @@ def READ():
 
 
 def FILTER_READ():
-    clear()
     try:
+        clear()
         width = 112  
         print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
         print(colored("[ FILTER LAPORAN BERDASARKAN STATUS ]".center(width), "yellow"))
@@ -80,7 +81,8 @@ def FILTER_READ():
         status_filter = inquirer.select(
             message="Pilih Status Laporan yang Ingin Ditampilkan:",
             choices=["belum ditindak", "di proses", "sudah ditindak"],
-            pointer="👉"
+            pointer="👉",
+            qmark=""
         ).execute()
 
         filtered = {
@@ -108,8 +110,8 @@ def FILTER_READ():
         clear()
 
 def CREATE(username):
-    clear()
     try:
+        clear()
         width = 45  
         print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
         print(colored("[ BUAT LAPORAN ]".center(width), "yellow"))
@@ -121,7 +123,8 @@ def CREATE(username):
         jenis = inquirer.select(
             message="Pilih Jenis Masalah:",
             choices=["sampah", "pencemaran", "perusakan"],
-            pointer="👉"
+            pointer="👉",
+            qmark=""
         ).execute()
 
         deskripsi = input("Deskripsi Singkat: ").strip()
@@ -150,13 +153,12 @@ def CREATE(username):
 
 #IHSAN
 def UPDATE():
-    clear()
     try:
+        clear()
         width = 45  
         print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
         print(colored("[ UPDATE STATUS LAPORAN ]".center(width), "yellow"))
         print(colored("=" * width + "\033[0m", "yellow"))
-        lokasi = input("Lokasi kejadian: ").strip()
         id = input("Masukkan ID Laporan: ").strip()
         if id not in laporan:
             raise ValueError(colored("ID Tidak Ditemukan.", "red"))
@@ -164,7 +166,8 @@ def UPDATE():
         status_baru = inquirer.select(
             message="Pilih Status Baru:",
             choices=["belum ditindak", "di proses", "sudah ditindak"],
-            pointer="👉"
+            pointer="👉",
+            qmark=""
         ).execute()
 
         before = laporan[id]["status"]
@@ -182,13 +185,12 @@ def UPDATE():
         clear()
 
 def DELETE():
-    clear()
     try:
+        clear()
         width = 45  
         print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
         print(colored("[ HAPUS LAPORAN ]".center(width), "yellow"))
         print(colored("=" * width + "\033[0m", "yellow"))
-        lokasi = input("Lokasi kejadian: ").strip()
         id = input("Masukkan ID Laporan: ").strip()
         if id not in laporan:
             raise ValueError("ID Tidak Ditemukan.")
