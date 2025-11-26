@@ -1,3 +1,4 @@
+# AJIS
 import os
 from InquirerPy import inquirer
 from loginregis import login, register
@@ -13,11 +14,12 @@ def clear():
 def pause():
     input(colored("\nTekan Enter", "grey"))
     
-def main():
+def utama():
     clear()
     load_dummy()
     while True:
         try:
+            clear()
             width = 45  # panjang garis
             print(colored("\n" + "=" * width, "yellow"))
             print(colored("[ SELAMAT DATANG ]".center(width), "yellow"))
@@ -31,7 +33,8 @@ def main():
                     "Register",
                     "Keluar"
                 ],
-                pointer="👉"
+                pointer="👉",
+                qmark=""
             ).execute()
 
             if pilihan == "Register":
@@ -66,4 +69,4 @@ def main():
             clear()
 
 if __name__ == "__main__":
-    main()
+    utama()
