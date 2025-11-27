@@ -58,134 +58,220 @@ def MENU_MANAGER(username):
 #AFIF
 def READ_ACC():
     clear()
-    width = 38
-    print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
-    print(colored("[ DAFTAR SEMUA AKUN ]".center(width), "yellow"))
-    print(colored("=" * width + "\033[0m", "yellow"))
-    headers = ["Username", "Password", "Role"]
-    rows = [[username, info["password"], info["role"]] for username, info in users.items()]
-    print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
-    pause()
+    try:
+        print(colored("==================================================", "yellow"))
+        print(colored("              DAFTAR SEMUA AKUN                   ", "yellow"))
+        print(colored("==================================================", "yellow"))
+        
+        headers = ["Username", "Password", "Role"]
+        rows = []
+        
+        for username in users:
+            password = users[username]["password"]
+            role = users[username]["role"]
+            rows.append([username, password, role])
+        
+        print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
+        pause()
+        clear()
+        
+    except Exception as e:
+        print(colored(f"\nTerjadi kesalahan: {e}", "red"))
+        pause()
+        clear()
 
 def READ_FILTER_ACC():
     clear()
     try:
+        print(colored("==================================================", "yellow"))
+        print(colored("        FILTER AKUN BERDASARKAN ROLE              ", "yellow"))
+        print(colored("==================================================", "yellow"))
+        
         role_filter = inquirer.select(
-            message="Pilih Role yang Ingin Ditampilkan:",
+            message="Pilih Role:",
             choices=["admin", "user", "manager"],
             pointer="👉",
             qmark=""
         ).execute()
 
-        filtered = {u: info for u, info in users.items() if info["role"] == role_filter}
+        clear()
+        print(colored("==================================================", "yellow"))
+        print(colored("        AKUN DENGAN ROLE: " + role_filter.upper() + "              ", "yellow"))
+        print(colored("==================================================", "yellow"))
+        
+        headers = ["Username", "Password", "Role"]
+        rows = []
+        
+        for username in users:
+            if users[username]["role"] == role_filter:
+                password = users[username]["password"]
+                role = users[username]["role"]
+                rows.append([username, password, role])
 
-        if not filtered:
-            print(colored(f"Tidak Ada Akun dengan Role '{role_filter}'.", "yellow"))
+        if len(rows) == 0:
+            print(colored(f"\nTidak ada akun dengan role '{role_filter}'", "yellow"))
         else:
-            headers = ["Username", "Password", "Role"]
-            rows = [[u, info["password"], info["role"]] for u, info in filtered.items()]
             print(tabulate(rows, headers=headers, tablefmt="rounded_outline"))
 
         pause()
+        clear()
+        
     except Exception as e:
-        print(f"\nError: {e}")
+        print(colored(f"\nTerjadi kesalahan: {e}", "red"))
         pause()
+        clear()
 
 def CREATE_ACC():
     clear()
     try:
-        username = input("Username Baru: ").strip()
-        password = input("Password (min 6 karakter): ").strip()
+        print(colored("==================================================", "yellow"))
+        print(colored("              BUAT AKUN BARU                      ", "yellow"))
+        print(colored("==================================================", "yellow"))
 
-        if not username or not password:
-            raise ValueError(colored("Username dan Password Tidak Boleh Kosong.", "red"))
+        username = input("\nUsername baru: ")
+        password = input("Password (minimal 6 karakter): ")
+
+        if username == "" or password == "":
+            print(colored("\nUsername dan password tidak boleh kosong", "red"))
+            pause()
+            clear()
+            return
+        
         if len(password) < 6:
-            raise ValueError(colored("Password Terlalu Pendek.", "red"))
+            print(colored("\nPassword terlalu pendek, minimal 6 karakter", "red"))
+            pause()
+            clear()
+            return
+        
         if username in users:
-            raise ValueError(colored("Username Sudah Terdaftar.", "red"))
+            print(colored("\nUsername sudah terdaftar", "red"))
+            pause()
+            clear()
+            return
 
         role = inquirer.select(
-            message="Pilih Role Untuk Akun Baru:",
+            message="Pilih Role:",
             choices=["admin", "user", "manager"],
             pointer="👉",
             qmark=""
         ).execute()
 
         users[username] = {"password": password, "role": role}
-        print(colored("Akun Berhasil Dibuat.", "green"))
+        print(colored("\nAkun berhasil dibuat", "green"))
         pause()
+        clear()
+        
     except Exception as e:
-        print(f"\nError: {e}")
+        print(colored(f"\nTerjadi kesalahan: {e}", "red"))
         pause()
+        clear()
 
 def UPDATE_ACC():
     clear()
     try:
-        username = input(colored("Masukkan Username yang Ingin Diubah: ", "cyan")).strip()
+        print(colored("==================================================", "yellow"))
+        print(colored("              UPDATE AKUN                         ", "yellow"))
+        print(colored("==================================================", "yellow"))
+
+        username = input("\nMasukkan username yang ingin diubah: ")
+        
         if username not in users:
-            raise ValueError(colored("Username Tidak Ditemukan.", "red"))
+            print(colored("\nUsername tidak ditemukan", "red"))
+            pause()
+            clear()
+            return
 
         pilihan = inquirer.select(
-            message="Apa yang Ingin Diubah?",
+            message="Apa yang ingin diubah?",
             choices=["Password", "Role"],
             pointer="👉",
             qmark=""
         ).execute()
 
         if pilihan == "Password":
-            current_password = users[username]["password"]
-            new_password = input("Masukkan Password Baru (min 6 karakter): ").strip()
-
-            if len(new_password) < 6:
-                raise ValueError(colored("Password Terlalu Pendek.", "red"))
-            if new_password == current_password:
-                raise ValueError(colored("Password Baru Tidak Boleh Sama dengan Password Lama.", "red"))
-
-            users[username]["password"] = new_password
-            print(colored("\nPassword Berhasil Diubah.", "green"))
+            password_lama = users[username]["password"]
+            password_baru = input("\nMasukkan password baru (minimal 6 karakter): ")
+            
+            if len(password_baru) < 6:
+                print(colored("\nPassword terlalu pendek, minimal 6 karakter", "red"))
+                pause()
+                clear()
+                return
+            
+            if password_baru == password_lama:
+                print(colored("\nPassword baru tidak boleh sama dengan password lama", "red"))
+                pause()
+                clear()
+                return
+            
+            users[username]["password"] = password_baru
+            print(colored("\nPassword berhasil diubah", "green"))
 
         elif pilihan == "Role":
-            current_role = users[username]["role"]
-            new_role = inquirer.select(
-                message=f"Role Saat Ini: {current_role}. Pilih Role Baru:",
+            role_lama = users[username]["role"]
+            print(f"\nRole saat ini: {role_lama}")
+            
+            role_baru = inquirer.select(
+                message="Pilih role baru:",
                 choices=["admin", "user", "manager"],
                 pointer="👉",
                 qmark=""
             ).execute()
+            
+            if role_baru == role_lama:
+                print(colored("\nRole baru tidak boleh sama dengan role lama", "red"))
+                pause()
+                clear()
+                return
+            
+            users[username]["role"] = role_baru
+            print(colored("\nRole berhasil diubah", "green"))
 
-            if new_role == current_role:
-                raise ValueError(colored("Role Baru Tidak Boleh Sama dengan Role Lama.", "red"))
-
-            users[username]["role"] = new_role
-            print(colored("\nRole Berhasil Diubah.", "green"))
         pause()
-
+        clear()
+        
     except Exception as e:
-        print(f"\nError: {e}")
+        print(colored(f"\nTerjadi kesalahan: {e}", "red"))
         pause()
-
+        clear()
 
 def DELETE_ACC():
     clear()
     try:
-        username = input(colored("Masukkan Username yang Ingin Dihapus: ", "cyan")).strip()
+        print(colored("==================================================", "yellow"))
+        print(colored("              HAPUS AKUN                          ", "yellow"))
+        print(colored("==================================================", "yellow"))
+
+        username = input("\nMasukkan username yang ingin dihapus: ")
+        
         if username not in users:
-            raise ValueError(colored("Username Tidak Ditemukan.", "red"))
+            print(colored("\nUsername tidak ditemukan", "red"))
+            pause()
+            clear()
+            return
+        
         if username == "admin":
-            raise ValueError(colored("Akun Admin Tidak Boleh Dihapus.", "red"))
+            print(colored("\nAkun admin tidak boleh dihapus", "red"))
+            pause()
+            clear()
+            return
 
         konfirmasi = inquirer.confirm(
-            message=f"Yakin Ingin Menghapus Akun '{username}'?",
-            default=False
+            message=f"Yakin ingin menghapus akun '{username}'?",
+            default=False,
+            qmark=""
         ).execute()
 
-        if konfirmasi:
+        if konfirmasi == True:
             del users[username]
-            print(colored("\nAkun Berhasil Dihapus.", "green"))
+            print(colored("\nAkun berhasil dihapus", "green"))
         else:
-            print(colored("\nPenghapusan Dibatalkan.", "yellow"))
-        pause()
+            print(colored("\nPenghapusan dibatalkan", "yellow"))
 
-    except Exception as e:
-        print(f"\nError: {e}")
         pause()
+        clear()
+        
+    except Exception as e:
+        print(colored(f"\nTerjadi kesalahan: {e}", "red"))
+        pause()
+        clear()
