@@ -22,7 +22,7 @@ def register():
         username = input("Username: ").strip()
         password = input("Password (min 6 karakter): ").strip()
 
-        if not username or not password:
+        if username == "" or password == "":
             raise ValueError("Username dan Password Tidak Boleh Kosong.")
         if len(password) < 6:
             raise ValueError(colored("Password Terlalu Pendek.", "red"))

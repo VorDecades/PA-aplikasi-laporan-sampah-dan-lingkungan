@@ -65,7 +65,7 @@ def UPDATE_PROFILE():
 
         if pilihan == "Username":
             new_username = input("Masukkan Username Baru: ").strip()
-            if not new_username:
+            if new_username == "":
                 raise ValueError(colored("Username Baru Tidak Boleh Kosong.", "red"))
             if new_username in users:
                 raise ValueError(colored("Username Sudah Digunakan.", "red"))
