@@ -1,3 +1,4 @@
+# AJIS
 import os
 from InquirerPy import inquirer
 from loginregis import login, register
@@ -13,16 +14,18 @@ def clear():
 def pause():
     input(colored("\nTekan Enter", "grey"))
     
-def main():
+def utama():
+    clear()
     load_dummy()
     while True:
         try:
+            clear()
             width = 45  # panjang garis
-            print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
+            print(colored("\n" + "=" * width, "yellow"))
             print(colored("[ SELAMAT DATANG ]".center(width), "yellow"))
             print(colored("[ APLIKASI PELAPORAN SAMPAH ]".center(width), "yellow"))
             print(colored("[ DAN LINGKUNGAN ]".center(width), "yellow"))
-            print(colored("=" * width + "\033[0m", "yellow"))
+            print(colored("=" * width, "yellow"))
             pilihan = inquirer.select(
                 message="pilih menu yang ingin diakses: ",
                 choices=[
@@ -30,7 +33,8 @@ def main():
                     "Register",
                     "Keluar"
                 ],
-                pointer="👉"
+                pointer="👉",
+                qmark=""
             ).execute()
 
             if pilihan == "Register":
@@ -65,4 +69,4 @@ def main():
             clear()
 
 if __name__ == "__main__":
-    main()
+    utama()

@@ -12,12 +12,12 @@ def register():
     clear()
     try:
         print(colored(
-        "\033[1m"                # aktifkan bold
-        + "\n" + "=" * 32        # garis atas
-        + "\n" + "====== >>> [REGISTER] <<< ======"  # judul menu
-        + "\n" + "=" * 32        # garis bawah
-        + "\033[0m\n",             # reset bold
-        "yellow"                 # warna teks
+        "\033[1m"
+        + "\n" + "=" * 32
+        + "\n" + "====== >>> [REGISTER] <<< ======"
+        + "\n" + "=" * 32
+        + "\033[0m\n",
+        "yellow"
         ))
         username = input("Username: ").strip()
         password = input("Password (min 6 karakter): ").strip()

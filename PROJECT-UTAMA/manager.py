@@ -13,10 +13,16 @@ def pause():
     input(colored("\nTekan Enter", "grey"))
 
 # AJIS
+# AJIS
 def MENU_MANAGER(username):
     while True:
         try:
             clear()
+            width = 45  
+            print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
+            print(colored("[ MENU MANAGER ]".center(width), "yellow"))
+            print(colored("=" * width + "\033[0m", "yellow"))
+            print(colored(f"\nSELAMAT DATANG {username}\n", "cyan"))
             width = 45  
             print(colored("\033[1m" + "\n" + "=" * width, "yellow"))
             print(colored("[ MENU MANAGER ]".center(width), "yellow"))
@@ -33,6 +39,8 @@ def MENU_MANAGER(username):
                     "Hapus Akun",
                     "Logout"
                 ],
+                pointer="👉",
+                qmark=""
                 pointer="👉",
                 qmark=""
             ).execute()
@@ -55,6 +63,7 @@ def MENU_MANAGER(username):
             print(f"\nError: {e}")
             pause()
 
+#AFIF
 #AFIF
 def READ_ACC():
     clear()
@@ -90,6 +99,8 @@ def READ_FILTER_ACC():
         role_filter = inquirer.select(
             message="Pilih Role:",
             choices=["admin", "user", "manager"],
+            pointer="👉",
+            qmark=""
             pointer="👉",
             qmark=""
         ).execute()
@@ -154,6 +165,8 @@ def CREATE_ACC():
             choices=["admin", "user", "manager"],
             pointer="👉",
             qmark=""
+            pointer="👉",
+            qmark=""
         ).execute()
 
         users[username] = {"password": password, "role": role}
@@ -186,6 +199,8 @@ def UPDATE_ACC():
             choices=["Password", "Role"],
             pointer="👉",
             qmark=""
+            pointer="👉",
+            qmark=""
         ).execute()
 
         if pilihan == "Password":
@@ -214,6 +229,8 @@ def UPDATE_ACC():
             role_baru = inquirer.select(
                 message="Pilih role baru:",
                 choices=["admin", "user", "manager"],
+                pointer="👉",
+                qmark=""
                 pointer="👉",
                 qmark=""
             ).execute()
