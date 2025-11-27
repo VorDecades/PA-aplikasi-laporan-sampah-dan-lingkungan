@@ -40,12 +40,12 @@ def login():
     clear()
     try:
         print(colored(
-        "\033[1m"                # aktifkan bold
-        + "\n" + "=" * 29        # garis atas
-        + "\n" + "====== >>> [LOGIN] <<< ======"  # judul menu
-        + "\n" + "=" * 29        # garis bawah
-        + "\033[0m\n",             # reset bold
-        "yellow"                 # warna teks
+        "\033[1m"
+        + "\n" + "=" * 29
+        + "\n" + "====== >>> [LOGIN] <<< ======"
+        + "\n" + "=" * 29
+        + "\033[0m\n",
+        "yellow"
         ))
         username = input("Username: ").strip()
         password = input("Password: ").strip()
