@@ -20,7 +20,7 @@ def utama():
     while True:
         try:
             clear()
-            width = 45  # panjang garis
+            width = 45
             print(colored("\n" + "=" * width, "yellow"))
             print(colored("[ SELAMAT DATANG ]".center(width), "yellow"))
             print(colored("[ APLIKASI PELAPORAN SAMPAH ]".center(width), "yellow"))

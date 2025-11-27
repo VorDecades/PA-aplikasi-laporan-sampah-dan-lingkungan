@@ -50,11 +50,11 @@ def login():
         username = input("Username: ").strip()
         password = input("Password: ").strip()
 
-        if username in users and users[username]["password"] == password:
+        if username in users and password == users[username]["password"]:
             role = users[username]["role"]
             print(colored(f"\nLogin Berhasil Sebagai {role}", "green"))
 
-            # simpan log activity
+            #catat log activity
             log_activity.append({
                 "user": username,
                 "role": role,
